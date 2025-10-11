@@ -27,6 +27,10 @@
       }
     }
 
+    function addnum(a, b) {
+      return a + b;
+    }
+
     function changeBackground(weather, weatherId) {
       const body = document.getElementById('mainBody');
       const effects = document.getElementById('weatherEffects');
