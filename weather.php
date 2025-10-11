@@ -1,30 +1,21 @@
 <?php
 session_start();
-
-// Check if user is admin
-if (!isset($_SESSION['is_admin'])) {
+if (!isset($_SESSION['email'])) {
   header("Location: login.php");
   exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <title>Weather App</title>
+  <title>Dynamic Weather App</title>
   <link rel="stylesheet" href="css/weather.css">
 </head>
+<body id="mainBody">
+  <div id="weatherEffects"></div>
 
-<body>
-  <video autoplay loop muted playsinline class="background-video">
-    <source src="weather.mp4" type="video/mp4">
-  </video>
-
-  <div class="logout">
-    <a href="logout.php">Logout</a>
-  </div>
+  <div class="logout"><a href="logout.php">Logout</a></div>
 
   <div class="container">
     <h2>🌤️ Welcome!</h2>
@@ -32,15 +23,17 @@ if (!isset($_SESSION['is_admin'])) {
       <input type="text" id="cityInput" placeholder="Enter city name">
       <button id="searchBtn">Get Weather</button>
     </div>
-    <div class="weather-info" id="weatherInfo"></div>
 
+    <div class="weather-info" id="weatherInfo"></div>
     <div class="recent-locations" id="recentLocations" style="display:none;">
       <h3>Recent Locations</h3>
       <div class="location-cards" id="locationCards"></div>
     </div>
   </div>
 
+  <!-- Shared background logic -->
+  <script src="./src/background.js"></script>
+  <!-- Weather logic -->
   <script src="./src/weather.js"></script>
 </body>
-
 </html>

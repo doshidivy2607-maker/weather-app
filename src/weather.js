@@ -27,7 +27,6 @@ async function getWeather() {
     displayWeather(data);
     saveRecentSearch(data);
     displayRecentSearches();
-
   } catch (error) {
     weatherInfo.innerHTML = `❌ ${error.message}`;
   }
@@ -49,9 +48,9 @@ function displayWeather(data) {
 }
 
 function saveRecentSearch(data) {
-  let recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+  let recent = JSON.parse(localStorage.getItem("recentSearches")) || [];
 
-  const searchData = {
+  const item = {
     name: data.name,
     country: data.sys.country,
     temp: Math.round(data.main.temp),
@@ -60,47 +59,42 @@ function saveRecentSearch(data) {
     description: data.weather[0].description
   };
 
-  recentSearches = recentSearches.filter(item => item.name !== searchData.name);
-  recentSearches.unshift(searchData);
+  recent = recent.filter(r => r.name !== item.name);
+  recent.unshift(item);
+  if (recent.length > 4) recent = recent.slice(0, 4);
 
-  if (recentSearches.length > 4) {
-    recentSearches = recentSearches.slice(0, 4);
-  }
-
-  localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+  localStorage.setItem("recentSearches", JSON.stringify(recent));
 }
 
 function displayRecentSearches() {
-  const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
-  const recentLocationsDiv = document.getElementById('recentLocations');
-  const locationCardsDiv = document.getElementById('locationCards');
+  const recent = JSON.parse(localStorage.getItem("recentSearches")) || [];
+  const container = document.getElementById("recentLocations");
+  const cards = document.getElementById("locationCards");
 
-  if (recentSearches.length === 0) {
-    recentLocationsDiv.style.display = 'none';
+  if (!recent.length) {
+    container.style.display = "none";
     return;
   }
 
-  recentLocationsDiv.style.display = 'block';
-  locationCardsDiv.innerHTML = '';
+  container.style.display = "block";
+  cards.innerHTML = "";
 
-  recentSearches.forEach(search => {
-    const card = document.createElement('div');
-    card.className = 'location-card';
-    card.onclick = () => searchCity(search.name);
-
+  recent.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "location-card";
+    card.onclick = () => searchCity(item.name);
     card.innerHTML = `
-      <h4>${search.name}</h4>
-      <p>${search.country}</p>
-      <img src="http://openweathermap.org/img/wn/${search.icon}.png" alt="${search.description}">
-      <div class="temp">${search.temp}°C</div>
-      <p>RealFeel® ${search.feelsLike}°</p>
+      <h4>${item.name}</h4>
+      <p>${item.country}</p>
+      <img src="http://openweathermap.org/img/wn/${item.icon}.png" alt="${item.description}">
+      <div class="temp">${item.temp}°C</div>
+      <p>RealFeel® ${item.feelsLike}°</p>
     `;
-
-    locationCardsDiv.appendChild(card);
+    cards.appendChild(card);
   });
 }
 
-async function searchCity(cityName) {
-  document.getElementById("cityInput").value = cityName;
+async function searchCity(city) {
+  document.getElementById("cityInput").value = city;
   await getWeather();
 }
