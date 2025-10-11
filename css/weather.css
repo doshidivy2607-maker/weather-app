@@ -1,0 +1,14 @@
+/* CSS for weather.php */
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
+  text-align: center;
+  padding-top: 50px;
+}
+
+h2 {
+  color: #2196f3;
+}
+
+/* Add more styles as needed for weather.php */
