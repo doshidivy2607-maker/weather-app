@@ -1,82 +1,34 @@
 <?php
-session_start();
+include "includes/header.php";
 
-// Check if user is admin
-if (isset($_SESSION['is_admin'])) {
-  if ($_SESSION['is_admin'] != 1) {
-    header("Location: weather.php");
+// Only allow admin users
+if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] != 1) {
+    header("Location: index.php");
     exit();
-  }
 }
-else {
-  header("Location: login.php");
-  exit();
-}
-
-include "db.php";
 
 // Fetch all users
-$sql = "SELECT id, name, email, is_admin FROM weather_app ORDER BY id DESC";
-$result = mysqli_query($conn, $sql);
+$result = mysqli_query($conn, "SELECT id, name, email FROM users ORDER BY id ASC");
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Admin Dashboard - Weather App</title>
-<link rel="stylesheet" href="css/admin_dashboard.css">
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <span class="welcome">👤 Welcome, <?php echo htmlspecialchars($_SESSION['name']); ?> (Admin)</span>
-      <a href="logout.php" class="logout-btn">🚪 Logout</a>
-    </div>
 
-    <h1>🌦️ Admin Dashboard - Registered Users</h1>
+<h1>Admin Dashboard</h1>
+<table border="1" cellpadding="10" cellspacing="0">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Action</th>
+    </tr>
+    <?php while($row = mysqli_fetch_assoc($result)): ?>
+    <tr>
+        <td><?= $row['id'] ?></td>
+        <td><?= $row['name'] ?></td>
+        <td><?= $row['email'] ?></td>
+        <td>
+            <a href="delete_user.php?id=<?= $row['id'] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+        </td>
+    </tr>
+    <?php endwhile; ?>
+</table>
 
-    <div class="stats">
-      <span>📊 Total Users: <strong><?php echo mysqli_num_rows($result); ?></strong></span>
-    </div>
-
-    <?php if (mysqli_num_rows($result) > 0): ?>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php while ($row = mysqli_fetch_assoc($result)): ?>
-          <tr>
-            <td>#<?php echo $row['id']; ?></td>
-            <td><?php echo htmlspecialchars($row['name']); ?></td>
-            <td><?php echo htmlspecialchars($row['email']); ?></td>
-            <td>
-              <?php if ($row['is_admin'] == 1): ?>
-                <span class="admin-badge">Admin</span>
-              <?php else: ?>
-                User
-              <?php endif; ?>
-            </td>
-            <td>
-              <?php if ($row['id'] != $_SESSION['user_id']): ?>
-                <a href="delete_user.php?id=<?php echo $row['id']; ?>" class="btn btn-delete" 
-                   onclick="return confirm('Are you sure you want to delete this user?')">🗑️ Delete</a>
-              <?php endif; ?>
-            </td>
-          </tr>
-          <?php endwhile; ?>
-        </tbody>
-      </table>
-    <?php else: ?>
-      <p style="text-align:center; padding:40px; color:#ffcc66;">📭 No users registered yet.</p>
-    <?php endif; ?>
-  </div>
-</body>
-</html>
-<?php mysqli_close($conn); ?>
+<?php include "includes/footer.php"; ?>

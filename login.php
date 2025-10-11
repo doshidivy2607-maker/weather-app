@@ -1,84 +1,32 @@
 <?php
-session_start();
-include "db.php";
+include "includes/header.php";
 
-$msg = "";
-
-// If user already logged in, redirect to weather
-if (isset($_SESSION['email'])) {
-    header("Location: weather.php");
-    exit();
-}
-
+$message = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = trim($_POST["email"] ?? "");
-    $password = trim($_POST["password"] ?? "");
+    $email = sanitizeInput($_POST['email']);
+    $password = sanitizeInput($_POST['password']);
 
-    if (empty($email) || empty($password)) {
-        $msg = "⚠️ Please fill all fields.";
+    $stmt = mysqli_prepare($conn, "SELECT id, password FROM users WHERE email=?");
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $id, $hashedPassword);
+    mysqli_stmt_fetch($stmt);
+
+    if ($id && password_verify($password, $hashedPassword)) {
+        $_SESSION['user_id'] = $id;
+        header("Location: weather.php");
+        exit();
     } else {
-        $stmt = mysqli_prepare($conn, "SELECT id, name, password FROM weather_app WHERE email = ?");
-        mysqli_stmt_bind_param($stmt, "s", $email);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_store_result($stmt);
-
-        if (mysqli_stmt_num_rows($stmt) > 0) {
-            mysqli_stmt_bind_result($stmt, $id, $name, $db_pass);
-            mysqli_stmt_fetch($stmt);
-
-            if ($password === $db_pass) {
-                $_SESSION["email"] = $email;
-                $_SESSION["name"] = $name;
-                header("Location: weather.php");
-                exit();
-            } else {
-                $msg = "❌ Invalid password!";
-            }
-        } else {
-            $msg = "⚠️ Email not registered!";
-        }
-
-        mysqli_stmt_close($stmt);
+        $message = "Invalid credentials.";
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Weather App</title>
-  <link rel="stylesheet" href="css/login.css">
-</head>
-<body id="mainBody">
 
-  <!-- Weather Effects Container -->
-  <div class="weather-effects" id="weatherEffects"></div>
-
-  <div class="container">
-    <table class="header-table">
-      <tr><td>🌦️ LOGIN</td></tr>
-    </table>
-
-    <?php if (!empty($msg)): ?>
-      <div class="message <?php echo strpos($msg, '✅') !== false ? 'success' : 'error'; ?>">
-        <?php echo $msg; ?>
-      </div>
-    <?php endif; ?>
-
-    <form method="POST" action="">
-      <div class="input-group">
-        <input type="email" name="email" placeholder="📧 Enter Email" required>
-      </div>
-      <div class="input-group">
-        <input type="password" name="password" placeholder="🔒 Enter Password" required>
-      </div>
-      <input type="submit" value="☁️ LOGIN NOW">
-    </form>
-
-    <p>Don't have an account? <a href="register.php">Register Here</a></p>
-  </div>
-
-  <script src="./src/background.js"></script>
-</body>
-</html>
+<h1>Login</h1>
+<form method="POST">
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+</form>
+<p><?= $message ?></p>
+<?php include "includes/footer.php"; ?>

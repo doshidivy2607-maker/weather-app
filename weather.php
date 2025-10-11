@@ -1,39 +1,26 @@
 <?php
-session_start();
-if (!isset($_SESSION['email'])) {
-  header("Location: login.php");
-  exit();
+include "includes/header.php";
+$apiKey = "YOUR_API_KEY";
+$weatherData = null;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $city = sanitizeInput($_POST['city']);
+    $weatherData = fetchWeather($city, $apiKey);
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Dynamic Weather App</title>
-  <link rel="stylesheet" href="css/weather.css">
-</head>
-<body id="mainBody">
-  <div id="weatherEffects"></div>
 
-  <div class="logout"><a href="logout.php">Logout</a></div>
+<h1>Check Weather</h1>
+<form method="POST">
+    <input type="text" name="city" placeholder="Enter city" required>
+    <button type="submit">Check</button>
+</form>
 
-  <div class="container">
-    <h2>🌤️ Welcome!</h2>
-    <div class="search-section">
-      <input type="text" id="cityInput" placeholder="Enter city name">
-      <button id="searchBtn">Get Weather</button>
-    </div>
+<?php if($weatherData): ?>
+<div class="weather-result">
+    <h2><?= $weatherData['name'] ?>, <?= $weatherData['sys']['country'] ?></h2>
+    <p>Temperature: <?= $weatherData['main']['temp'] ?>°C</p>
+    <p>Condition: <?= $weatherData['weather'][0]['description'] ?></p>
+</div>
+<?php endif; ?>
 
-    <div class="weather-info" id="weatherInfo"></div>
-    <div class="recent-locations" id="recentLocations" style="display:none;">
-      <h3>Recent Locations</h3>
-      <div class="location-cards" id="locationCards"></div>
-    </div>
-  </div>
-
-  <!-- Shared background logic -->
-  <script src="./src/background.js"></script>
-  <!-- Weather logic -->
-  <script src="./src/weather.js"></script>
-</body>
-</html>
+<?php include "includes/footer.php"; ?>
