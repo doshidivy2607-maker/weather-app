@@ -9,10 +9,10 @@ body {
 .container {
   width: 85%;
   margin: 50px auto;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 h1 {
   text-align: center;
@@ -26,7 +26,7 @@ h1 {
   margin-bottom: 20px;
 }
 .welcome {
-  color: #4CAF50;
+  color: #4caf50;
   font-size: 18px;
 }
 .logout-btn {
@@ -34,11 +34,11 @@ h1 {
   text-decoration: none;
   font-weight: bold;
   padding: 8px 15px;
-  background: rgba(255,102,102,0.2);
+  background: rgba(255, 102, 102, 0.2);
   border-radius: 6px;
 }
 .logout-btn:hover {
-  background: rgba(255,102,102,0.3);
+  background: rgba(255, 102, 102, 0.3);
 }
 .stats {
   text-align: center;
@@ -46,7 +46,7 @@ h1 {
   font-size: 18px;
 }
 .stats span {
-  background: rgba(255,204,102,0.2);
+  background: rgba(255, 204, 102, 0.2);
   padding: 10px 20px;
   border-radius: 8px;
   margin: 0 10px;
@@ -54,22 +54,23 @@ h1 {
 table {
   width: 100%;
   border-collapse: collapse;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   overflow: hidden;
 }
-th, td {
+th,
+td {
   padding: 15px;
   text-align: left;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 th {
-  background: rgba(255,204,102,0.3);
+  background: rgba(255, 204, 102, 0.3);
   font-weight: bold;
   text-transform: uppercase;
 }
 tr:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 .btn {
   padding: 6px 12px;
@@ -80,7 +81,7 @@ tr:hover {
   display: inline-block;
 }
 .btn-view {
-  background: #4CAF50;
+  background: #4caf50;
   color: white;
 }
 .btn-delete {

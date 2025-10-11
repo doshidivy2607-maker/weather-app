@@ -1,0 +1,5 @@
+    <script src="./src/background.js"></script>
+</body>
+
+</html>
+
