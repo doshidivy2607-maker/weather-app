@@ -1,5 +1,5 @@
 // ✅ Handles dynamic weather background (shared by login, index, weather pages)
-const weatherBgApi = "ca68ddbdc543058f30aa435cecc45f2f";
+const weatherBgApi = "9395a30196f7ea25c4527ea666ca6886";
 
 async function getWeatherBackground() {
 
