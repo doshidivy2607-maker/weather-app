@@ -18,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $msg = "⚠️ Please fill all fields.";
     } else {
         $stmt = mysqli_prepare($conn, "SELECT id, name, password FROM user_master WHERE email = ?");
+
         mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_store_result($stmt);
@@ -27,11 +28,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mysqli_stmt_fetch($stmt);
 
             if ($password === $db_pass) {
-                $_SESSION["email"] = $email;
-                $_SESSION["name"] = $name;
-                header("Location: weather.php");
-                exit();
-            } else {
+                  $_SESSION["email"] = $email;
+                  $_SESSION["name"] = $name;
+                  $_SESSION["user_id"] = $id;
+                  $_SESSION["is_admin"] = $is_admin; // ✅ Add this line
+                  if ($is_admin == 1) {
+                      header("Location: admin_dashboard.php");
+                  } else {
+                      header("Location: weather.php");
+                  }
+                  exit();
+              }
+            else {
                 $msg = "❌ Invalid password!";
             }
         } else {

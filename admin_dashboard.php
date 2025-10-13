@@ -1,19 +1,18 @@
 <?php
 session_start();
 
-// Check if user is admin
-if (isset($_SESSION['is_admin'])) {
-  if ($_SESSION['is_admin'] != 1) {
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php");
+    exit();
+}
+
+if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] != 1) {
     header("Location: weather.php");
     exit();
-  }
-}
-else {
-  header("Location: login.php");
-  exit();
 }
 
 include "db.php";
+
 
 // Fetch all users
 $sql = "SELECT id, name, email, is_admin FROM user_master ORDER BY id DESC";
