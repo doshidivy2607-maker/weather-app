@@ -4,7 +4,7 @@ session_start();
 // Check if user is admin
 if (isset($_SESSION['is_admin'])) {
   if ($_SESSION['is_admin'] != 1) {
-    header("Location: weather.php");
+    header("Location: admin_dashboard.php");
     exit();
   }
 }
@@ -16,7 +16,7 @@ else {
 include "db.php";
 
 // Fetch all users
-$sql = "SELECT id, name, email, is_admin FROM weather_app ORDER BY id DESC";
+$sql = "SELECT id, name, email, is_admin FROM user_master ORDER BY id DESC";
 $result = mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
