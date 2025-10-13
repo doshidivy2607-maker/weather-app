@@ -1,5 +1,7 @@
 <?php
 session_start();
+include __DIR__ . "/db.php";
+
 
 // Check if user is admin
 if (isset($_SESSION['is_admin'])) {
@@ -13,10 +15,8 @@ else {
   exit();
 }
 
-include "db.php";
-
 // Fetch all users
-$sql = "SELECT id, name, email, is_admin FROM weather_app ORDER BY id DESC";
+$sql = "SELECT id, name, email, is_admin FROM user_master ORDER BY id DESC";
 $result = mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
