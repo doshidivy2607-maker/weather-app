@@ -4,7 +4,7 @@
 header('Content-Type: application/json; charset=utf-8');
 
 // Put your OpenWeather API key here:
-$API_KEY = 'YOUR_OPENWEATHER_API_KEY_HERE';
+$API_KEY = '9395a30196f7ea25c4527ea666ca6886';
 
 if (empty($API_KEY)) {
     http_response_code(500);
