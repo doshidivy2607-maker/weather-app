@@ -32,7 +32,7 @@
   <div class="cursor-shadow"></div>
 
   <!-- Footer -->
-  <div class="footer-name">Made with ❤️ by Divy Doshi</div>
+  <div class="footer-name">Made with by Divy Doshi and Mishri Panchal </div>
 
   <script src="./src/background.js"></script>
 </body>

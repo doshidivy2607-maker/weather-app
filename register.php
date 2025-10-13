@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($name) || empty($email) || empty($password)) {
         $msg = "⚠️ Please fill out all fields.";
     } else {
-        $check = mysqli_prepare($conn, "SELECT id FROM weather_app WHERE email = ?");
+        $check = mysqli_prepare($conn, "SELECT id FROM user_master WHERE email = ?");
         mysqli_stmt_bind_param($check, "s", $email);
         mysqli_stmt_execute($check);
         mysqli_stmt_store_result($check);
@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mysqli_stmt_close($check);
             
             try {
-                $stmt = mysqli_prepare($conn, "INSERT INTO weather_app (name, email, password, is_admin) VALUES (?, ?, ?, 0)");
+                $stmt = mysqli_prepare($conn, "INSERT INTO user_master (name, email, password, is_admin) VALUES (?, ?, ?, 0)");
                 mysqli_stmt_bind_param($stmt, "sss", $name, $email, $password);
                 
                 if (mysqli_stmt_execute($stmt)) {

@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($email) || empty($password)) {
         $msg = "⚠️ Please fill all fields.";
     } else {
-        $stmt = mysqli_prepare($conn, "SELECT id, name, password FROM weather_app WHERE email = ?");
+        $stmt = mysqli_prepare($conn, "SELECT id, name, password FROM user_master WHERE email = ?");
         mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_store_result($stmt);
