@@ -4,7 +4,7 @@ session_start();
 // Check if user is admin
 if (isset($_SESSION['is_admin'])) {
   if ($_SESSION['is_admin'] != 1) {
-    header("Location: admin_dashboard.php");
+    header("Location: weather.php");
     exit();
   }
 }
