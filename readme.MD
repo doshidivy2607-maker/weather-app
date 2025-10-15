@@ -14,4 +14,5 @@ A simple and responsive weather application built using PHP, JavaScript, and HTM
 
 ![Homepage](screenshots/homepage.png)  
 ![Weather Details](screenshots/weather_details.png)  
+![Registration Page](screenshots/) 
 ![Login Page](screenshots/login.png)
