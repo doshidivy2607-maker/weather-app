@@ -10,7 +10,7 @@ if (isset($_GET['id'])) {
     if (empty($id)) {
         $error = "⚠️ Please fill all fields!";
     } else {
-        $stmt = mysqli_prepare($conn, "DELETE FROM weather_app WHERE id = ?");
+        $stmt = mysqli_prepare($conn, "DELETE FROM user_master WHERE id = ?");
         mysqli_stmt_bind_param($stmt, "s", $id);
 
         $error = "Data is founded and query is createed with id: " . $id . "<br>";

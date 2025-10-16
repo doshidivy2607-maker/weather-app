@@ -4,7 +4,8 @@ session_start();
 if (!isset($_SESSION['email'])) {
     header("Location: login.php");
     exit();
-}
+  }
+  // print_r($_SESSION);
 
 if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] != 1) {
     header("Location: weather.php");

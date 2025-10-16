@@ -17,29 +17,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($email) || empty($password)) {
         $msg = "⚠️ Please fill all fields.";
     } else {
-        $stmt = mysqli_prepare($conn, "SELECT id, name, password FROM user_master WHERE email = ?");
-
+        // ✅ Include is_admin in the query
+        $stmt = mysqli_prepare($conn, "SELECT id, name, password, is_admin FROM user_master WHERE email = ?");
         mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_store_result($stmt);
 
         if (mysqli_stmt_num_rows($stmt) > 0) {
-            mysqli_stmt_bind_result($stmt, $id, $name, $db_pass);
+            // ✅ Bind all 4 variables
+            mysqli_stmt_bind_result($stmt, $id, $name, $db_pass, $is_admin);
             mysqli_stmt_fetch($stmt);
 
             if ($password === $db_pass) {
-                  $_SESSION["email"] = $email;
-                  $_SESSION["name"] = $name;
-                  $_SESSION["user_id"] = $id;
-                  $_SESSION["is_admin"] = $is_admin; // ✅ Add this line
-                  if ($is_admin == 1) {
-                      header("Location: admin_dashboard.php");
-                  } else {
-                      header("Location: weather.php");
-                  }
-                  exit();
-              }
-            else {
+                $_SESSION["email"] = $email;
+                $_SESSION["name"] = $name;
+                $_SESSION["user_id"] = $id;
+                $_SESSION["is_admin"] = $is_admin;
+
+                if ($is_admin == 1) {
+                    header("Location: admin_dashboard.php");
+                } else {
+                    header("Location: weather.php");
+                }
+                exit();
+            } else {
                 $msg = "❌ Invalid password!";
             }
         } else {
