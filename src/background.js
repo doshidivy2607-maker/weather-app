@@ -1,16 +1,27 @@
 // ✅ Handles dynamic weather background (shared by login, index, weather pages)
+
 const weatherBgApi = "9395a30196f7ea25c4527ea666ca6886";
 
+// 🕒 Apply immediate day/night theme (before weather API loads)
+(function applyImmediateTheme() {
+  const hour = new Date().getHours();
+  const body = document.getElementById("mainBody");
+  if (body) {
+    if (hour >= 6 && hour < 18) {
+      body.classList.add("day");
+    } else {
+      body.classList.add("night");
+    }
+  }
+})();
+
 async function getWeatherBackground() {
-
   console.log("starting fetching background");
-
   if (!navigator.geolocation) return setDefaultBackground();
 
   navigator.geolocation.getCurrentPosition(async (pos) => {
     const lat = pos.coords.latitude;
     const lon = pos.coords.longitude;
-
     try {
       const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherBgApi}`);
       const data = await res.json();
@@ -52,7 +63,6 @@ function changeBackground(weather) {
 
 function setDefaultBackground() {
   console.log("Set proper default backgrond");
-  
   const hour = new Date().getHours();
   const isNight = hour < 6 || hour > 18;
   document.getElementById("mainBody").classList.add(isNight ? "night" : "clear");

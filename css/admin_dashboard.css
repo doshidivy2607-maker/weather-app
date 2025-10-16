@@ -1,96 +1,182 @@
-/* CSS for admin_dashboard.php */
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #232526, #414345);
-  color: white;
+/* 🌦️ Dynamic Day/Night Weather-Themed Admin Dashboard CSS */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
+
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  transition: background 1s ease, color 1s ease;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: hidden;
+}
+
+/* ☀️ Day theme */
+body.day {
+  background: linear-gradient(-45deg, #a1c4fd, #c2e9fb, #89f7fe, #74ebd5);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: #1a1a1a;
+}
+
+/* 🌙 Night theme */
+body.night {
+  background: linear-gradient(-45deg, #141E30, #243B55, #232526, #414345);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
+  color: #ffffff;
+}
+
+/* 🌈 Animated gradient motion */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 🌤️ Glass container */
 .container {
   width: 85%;
-  margin: 50px auto;
-  background: rgba(255,255,255,0.1);
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  margin: 60px auto;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ☀️ Heading */
 h1 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #ffcc66;
+  margin-bottom: 25px;
+  font-size: 2.3rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  animation: fadeIn 1s ease;
 }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 👤 Header Bar */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
+
 .welcome {
-  color: #4CAF50;
   font-size: 18px;
+  font-weight: 500;
 }
+
 .logout-btn {
-  color: #ff6666;
+  background: linear-gradient(90deg, #ff7eb3, #ff758c);
+  color: white;
   text-decoration: none;
-  font-weight: bold;
-  padding: 8px 15px;
-  background: rgba(255,102,102,0.2);
-  border-radius: 6px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 0 8px rgba(255, 120, 150, 0.6);
+  transition: all 0.3s ease;
 }
 .logout-btn:hover {
-  background: rgba(255,102,102,0.3);
+  background: linear-gradient(90deg, #ff8fa3, #ff5e78);
+  transform: scale(1.08);
 }
+
+/* 🌈 Stats */
 .stats {
   text-align: center;
   margin-bottom: 30px;
   font-size: 18px;
 }
 .stats span {
-  background: rgba(255,204,102,0.2);
-  padding: 10px 20px;
-  border-radius: 8px;
-  margin: 0 10px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 12px 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
 }
+.stats span:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 📋 Table */
 table {
   width: 100%;
   border-collapse: collapse;
-  background: rgba(255,255,255,0.05);
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
   overflow: hidden;
+  backdrop-filter: blur(5px);
 }
 th, td {
   padding: 15px;
   text-align: left;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 th {
-  background: rgba(255,204,102,0.3);
-  font-weight: bold;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 tr:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.01);
 }
+
+/* 🔘 Buttons */
 .btn {
-  padding: 6px 12px;
-  border-radius: 5px;
+  padding: 8px 14px;
+  border-radius: 6px;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 14px;
   margin: 0 5px;
   display: inline-block;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 .btn-view {
-  background: #4CAF50;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
   color: white;
+  box-shadow: 0 0 10px rgba(0, 114, 255, 0.5);
+}
+.btn-view:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(0, 114, 255, 0.8);
 }
 .btn-delete {
-  background: #f44336;
+  background: linear-gradient(90deg, #ff6a00, #ee0979);
   color: white;
+  box-shadow: 0 0 10px rgba(255, 100, 100, 0.5);
 }
+.btn-delete:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(255, 100, 100, 0.7);
+}
+
+/* ☀️ Admin Badge */
 .admin-badge {
-  background: #ff9800;
-  color: white;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  background: linear-gradient(90deg, #ffdd00, #fbb034);
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
 }
