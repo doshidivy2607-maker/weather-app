@@ -1,5 +1,5 @@
 // ✅ Replace below API key with your valid OpenWeather API key
-const apiKey = "9395a30196f7ea25c4527ea666ca6886";
+const apiKey = "e989953360101c93cd4f8279d969a659";
 
 window.onload = function() {
   displayRecentSearches();

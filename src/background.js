@@ -1,6 +1,6 @@
 // ✅ Handles dynamic weather background (shared by login, index, weather pages)
 
-const weatherBgApi = "9395a30196f7ea25c4527ea666ca6886";
+const weatherBgApi = "e989953360101c93cd4f8279d969a659";
 
 // 🕒 Apply immediate day/night theme (before weather API loads)
 (function applyImmediateTheme() {
