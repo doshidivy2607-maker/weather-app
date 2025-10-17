@@ -1,17 +1,59 @@
 // ✅ Replace below API key with your valid OpenWeather API key
-const apiKey = "e989953360101c93cd4f8279d969a659";
+const apiKey = 'YOUR_OPENWEATHER_API_KEY';
+
+// Try to use geolocation on load to fetch realtime weather and inform background.js
+function fetchWeatherByCoords(lat, lon, isMini = false) {
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      displayWeather(data, isMini);
+      // If background.js exposes a global changeBackgroundByWeather function, call it
+      if (window.changeBackgroundByWeather && typeof window.changeBackgroundByWeather === 'function') {
+        try { window.changeBackgroundByWeather(data); } catch (e) { /* ignore */ }
+      }
+    })
+    .catch((err) => console.error('Error fetching weather by coords', err));
+}
+
+// on load, attempt geolocation-based realtime weather fetch
+function tryGeolocationRealtime() {
+  if (!navigator || !navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      fetchWeatherByCoords(latitude, longitude, false);
+    },
+    (err) => {
+      // silently ignore geolocation error — user may deny permission
+      console.warn('Geolocation not available or permission denied', err);
+    },
+    { enableHighAccuracy: false, timeout: 7000 }
+  );
+}
+
+// run once on script load
+tryGeolocationRealtime();
 
 window.onload = function() {
   displayRecentSearches();
-  document.getElementById("searchBtn").addEventListener("click", getWeather);
+  const mainBtn = document.getElementById("searchBtn");
+  if (mainBtn) mainBtn.addEventListener("click", () => getWeather(false));
+
+  const miniBtn = document.getElementById("searchBtnMini");
+  if (miniBtn) miniBtn.addEventListener("click", () => getWeather(true));
 };
 
-async function getWeather() {
-  const city = document.getElementById("cityInput").value.trim();
-  const weatherInfo = document.getElementById("weatherInfo");
+async function getWeather(isMini = false) {
+  // Determine city from main input or mini input
+  const mainInput = document.getElementById('cityInput');
+  const miniInput = document.getElementById('cityInputMini');
+  const city = (mainInput ? mainInput.value : (miniInput ? miniInput.value : '')).trim();
+
+  const weatherInfo = isMini ? document.getElementById('weatherInfoMini') : document.getElementById('weatherInfo');
 
   if (!city) {
-    weatherInfo.innerHTML = "⚠️ Please enter a city name!";
+    if (weatherInfo) weatherInfo.innerHTML = "⚠️ Please enter a city name!";
     return;
   }
 
@@ -24,27 +66,39 @@ async function getWeather() {
     if (response.status === 401) throw new Error("Invalid API key.");
     if (response.status === 404) throw new Error("City not found.");
 
-    displayWeather(data);
+    displayWeather(data, isMini);
     saveRecentSearch(data);
     displayRecentSearches();
   } catch (error) {
-    weatherInfo.innerHTML = `❌ ${error.message}`;
+    if (weatherInfo) weatherInfo.innerHTML = `❌ ${error.message}`;
   }
 }
 
-function displayWeather(data) {
-  const weatherInfo = document.getElementById("weatherInfo");
-  weatherInfo.innerHTML = `
-    <div class="weather-card">
-      <h3>${data.name}, ${data.sys.country}</h3>
-      <img class="icon" src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png">
-      <p>🌡️ Temperature: ${data.main.temp}°C</p>
-      <p>🌥️ Condition: ${data.weather[0].description}</p>
-      <p>💧 Humidity: ${data.main.humidity}%</p>
-      <p>🌬️ Wind Speed: ${data.wind.speed} m/s</p>
-      <p>🌡️ Feels Like: ${data.main.feels_like}°C</p>
-    </div>
-  `;
+function displayWeather(data, isMini = false) {
+  const weatherInfo = isMini ? document.getElementById('weatherInfoMini') : document.getElementById('weatherInfo');
+  if (!weatherInfo) return;
+
+  if (isMini) {
+    weatherInfo.innerHTML = `
+      <div class="weather-card">
+        <h4>${data.name}, ${data.sys.country}</h4>
+        <img class="icon" src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="${data.weather[0].description}">
+        <div>🌡️ ${Math.round(data.main.temp)}°C • ${data.weather[0].description}</div>
+      </div>
+    `;
+  } else {
+    weatherInfo.innerHTML = `
+      <div class="weather-card">
+        <h3>${data.name}, ${data.sys.country}</h3>
+        <img class="icon" src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png">
+        <p>🌡️ Temperature: ${data.main.temp}°C</p>
+        <p>🌥️ Condition: ${data.weather[0].description}</p>
+        <p>💧 Humidity: ${data.main.humidity}%</p>
+        <p>🌬️ Wind Speed: ${data.wind.speed} m/s</p>
+        <p>🌡️ Feels Like: ${data.main.feels_like}°C</p>
+      </div>
+    `;
+  }
 }
 
 function saveRecentSearch(data) {

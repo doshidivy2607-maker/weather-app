@@ -6,12 +6,38 @@
   font-family: 'Poppins', sans-serif;
 }
 
+@import url('./shared-ui.css');
+
 body {
   height: 100vh;
   width: 100%;
   overflow-x: hidden;
   color: white;
   position: relative;
+}
+
+/* Custom cursor (copied from index.css) */
+.cursor, .cursor-shadow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.cursor {
+  width: 12px;
+  height: 12px;
+  background: white;
+  mix-blend-mode: difference;
+}
+
+.cursor-shadow {
+  width: 35px;
+  height: 35px;
+  background: rgba(255,255,255,0.15);
 }
 
 .background-video {

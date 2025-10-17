@@ -2,18 +2,135 @@
 
 const weatherBgApi = "e989953360101c93cd4f8279d969a659";
 
-// 🕒 Apply immediate day/night theme (before weather API loads)
-(function applyImmediateTheme() {
-  const hour = new Date().getHours();
-  const body = document.getElementById("mainBody");
-  if (body) {
-    if (hour >= 6 && hour < 18) {
-      body.classList.add("day");
-    } else {
-      body.classList.add("night");
+// Cleanup any leftover page-transition artifacts from older versions
+(function cleanupOldTransitions() {
+  try {
+    const oldStyle = document.getElementById('page-transition-style');
+    if (oldStyle && oldStyle.parentNode) oldStyle.parentNode.removeChild(oldStyle);
+    const oldOverlay = document.getElementById('page-transition-overlay');
+    if (oldOverlay && oldOverlay.parentNode) oldOverlay.parentNode.removeChild(oldOverlay);
+    const body = document.body || document.getElementsByTagName('body')[0];
+    if (body) {
+      ['rotate-in', 'rotate-out', 'active', 'fade-out'].forEach(c => body.classList.remove(c));
+      body.style.transform = '';
+      body.style.transition = '';
+      body.style.opacity = '';
     }
+  } catch (e) {
+    /* ignore cleanup errors */
   }
 })();
+
+// If you want to disable all page-change visual effects, set this to true.
+// We'll clear any existing particles and skip initializing animations/cursor/background.
+// Set to false to enable dynamic weather visuals and interactive effects.
+const DISABLE_PAGE_EFFECTS = false;
+
+// Always set a simple time-based theme (day/night) so CSS reflects local time for any user.
+(function setTimeTheme() {
+  try {
+    const hour = new Date().getHours();
+    const body = document.body || document.getElementsByTagName('body')[0];
+    if (!body) return;
+    // clear previous time/day classes
+    body.classList.remove('day', 'night', 'time-morning', 'time-afternoon', 'time-evening', 'time-night');
+
+    // set simple day/night
+    if (hour >= 6 && hour < 18) {
+      body.classList.add('day');
+    } else {
+      body.classList.add('night');
+    }
+
+    // set finer time slots
+    if (hour >= 6 && hour < 12) {
+      body.classList.add('time-morning');
+    } else if (hour >= 12 && hour < 17) {
+      body.classList.add('time-afternoon');
+    } else if (hour >= 17 && hour < 20) {
+      body.classList.add('time-evening');
+    } else {
+      body.classList.add('time-night');
+    }
+  } catch (e) { /* ignore */ }
+})();
+
+if (DISABLE_PAGE_EFFECTS) {
+  try {
+    // Remove any existing weather particles/elements
+    const effects = document.getElementById('weatherEffects');
+    if (effects) effects.innerHTML = '';
+    const sun = document.getElementById('sun'); if (sun) sun.style.display = 'none';
+    const moon = document.getElementById('moon'); if (moon) moon.style.display = 'none';
+    const cursor = document.querySelector('.cursor'); if (cursor && cursor.parentNode) cursor.parentNode.removeChild(cursor);
+    const shadow = document.querySelector('.cursor-shadow'); if (shadow && shadow.parentNode) shadow.parentNode.removeChild(shadow);
+
+    // Inject a small CSS override to disable animations/transitions
+    if (!document.getElementById('disable-effects-style')) {
+      const s = document.createElement('style');
+      s.id = 'disable-effects-style';
+      s.innerHTML = `
+        * { animation: none !important; transition: none !important; }
+        .weather-effects, .star, .rain-drop, .snow-flake, .cloud, .sun, .moon, .cursor, .cursor-shadow { display: none !important; }
+      `;
+      document.head.appendChild(s);
+    }
+  } catch (e) { /* ignore */ }
+  // Stop further initialization below by exiting early
+  // (wrap remaining init in a no-op)
+  console.info('Page visual effects disabled by DISABLE_PAGE_EFFECTS flag.');
+  // Prevent the rest of the file from running by returning from a closure
+} else {
+  // Continue with normal initialization
+
+  // Auto-init background and show sun/moon only when effects enabled
+  getWeatherBackground();
+
+  // Ensure cursor elements exist on the page so custom cursor works across pages
+  (function ensureCursorElements() {
+    try {
+      if (!document.querySelector('.cursor')) {
+        const c = document.createElement('div');
+        c.className = 'cursor';
+        document.body.appendChild(c);
+      }
+      if (!document.querySelector('.cursor-shadow')) {
+        const s = document.createElement('div');
+        s.className = 'cursor-shadow';
+        document.body.appendChild(s);
+      }
+    } catch (e) { /* ignore DOM errors */ }
+  })();
+
+  // Smooth custom cursor follow
+  ;(function initCustomCursor() {
+    const cursor = document.querySelector('.cursor');
+    const shadow = document.querySelector('.cursor-shadow');
+    if (!cursor || !shadow) return;
+
+    let mouseX = 0, mouseY = 0;
+    let posX = 0, posY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animate() {
+      posX += (mouseX - posX) * 0.15;
+      posY += (mouseY - posY) * 0.15;
+      cursor.style.transform = `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
+      shadow.style.transform = `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  })();
+
+}
+
+// Rest of file functions (addStars, addRain, etc.) will remain defined
+
+
 
 async function getWeatherBackground() {
   console.log("starting fetching background");
@@ -61,12 +178,31 @@ function changeBackground(weather) {
   }
 }
 
+// Expose a safer wrapper for other scripts to pass raw weather API responses
+window.changeBackgroundByWeather = function (weatherData) {
+  try {
+    // some callers may pass a full OpenWeather response; adapt shape if necessary
+    if (!weatherData) return;
+    // If the structure is the OpenWeather current weather object, it has weather[0].main
+    const primary = (weatherData.weather && weatherData.weather[0] && weatherData.weather[0].main) || weatherData.main || '';
+    if (primary && typeof primary === 'string') {
+      changeBackground(primary.toLowerCase());
+    } else {
+      // fallback: try to infer from raw object
+      try { changeBackground('clear'); } catch (e) { /* ignore */ }
+    }
+  } catch (e) {
+    console.warn('changeBackgroundByWeather failed', e);
+  }
+};
+
 function setDefaultBackground() {
   console.log("Set proper default backgrond");
   const hour = new Date().getHours();
   const isNight = hour < 6 || hour > 18;
   document.getElementById("mainBody").classList.add(isNight ? "night" : "clear");
   if (isNight) addStars();
+  showSun(!isNight);
 }
 
 function addStars() {
@@ -115,5 +251,12 @@ function addClouds() {
   }
 }
 
-// Auto-init
-getWeatherBackground();
+// Show or hide sun/moon based on boolean (true => day/sun, false => night/moon)
+function showSun(isDay) {
+  const sun = document.getElementById('sun');
+  const moon = document.getElementById('moon');
+  if (sun) sun.style.display = isDay ? 'block' : 'none';
+  if (moon) moon.style.display = isDay ? 'none' : 'block';
+}
+
+// Page transitions removed: no 3D rotate or injected CSS. Navigation is immediate.

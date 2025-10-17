@@ -4,6 +4,8 @@
     box-sizing: border-box;
   }
 
+@import url('./shared-ui.css');
+
   body {
     height: 100vh;
     display: flex;
@@ -26,6 +28,12 @@
   body.clear {
     background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
   }
+
+  /* Time-of-day tweaks (set by JS) */
+  body.time-morning { filter: saturate(1.05) brightness(1.03); }
+  body.time-afternoon { filter: saturate(1.02) hue-rotate(-4deg); }
+  body.time-evening { filter: contrast(0.95) saturate(1.1) hue-rotate(-10deg); }
+  body.time-night { filter: brightness(0.85) saturate(0.9); }
 
   body.sunny {
     background: linear-gradient(to bottom, #FDB813 0%, #FFEB3B 50%, #87CEEB 100%);
@@ -290,4 +298,28 @@
     h1 { font-size: 2rem; }
     .sub-text { font-size: 1rem; }
     .welcome-user { font-size: 1.4rem; }
+  }
+
+  /* Mini weather and cards */
+  #miniWeather input {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.12);
+    outline: none;
+  }
+
+  .weather-card {
+    background: rgba(0,0,0,0.25);
+    padding: 10px 14px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    color: #fff;
+  }
+
+  .weather-card .icon {
+    width: 60px;
+    height: 60px;
+    vertical-align: middle;
   }

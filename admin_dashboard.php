@@ -26,7 +26,14 @@ $result = mysqli_query($conn, $sql);
 <title>Admin Dashboard - Weather App</title>
 <link rel="stylesheet" href="css/admin_dashboard.css">
 </head>
-<body>
+<body id="mainBody">
+  <!-- Weather Effects Container (particles, sun/moon, clouds) -->
+  <div class="weather-effects" id="weatherEffects"></div>
+  <div id="sceneExtras">
+    <div class="sun" id="sun" aria-hidden="true" style="display:none"></div>
+    <div class="moon" id="moon" aria-hidden="true" style="display:none"></div>
+  
+  </div>
   <div class="container">
     <div class="header">
       <span class="welcome">👤 Welcome, <?php echo htmlspecialchars($_SESSION['name']); ?> (Admin)</span>
@@ -77,6 +84,7 @@ $result = mysqli_query($conn, $sql);
       <p style="text-align:center; padding:40px; color:#ffcc66;">📭 No users registered yet.</p>
     <?php endif; ?>
   </div>
+  <script src="./src/background.js"></script>
 </body>
 </html>
 <?php mysqli_close($conn); ?>
