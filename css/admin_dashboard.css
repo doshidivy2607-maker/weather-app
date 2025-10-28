@@ -127,42 +127,29 @@ h1 {
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* 📋 Table - merged with page background (glass/transparent look) */
+/* 📋 Table */
 table {
   width: 100%;
-  border-collapse: separate;
-  background: transparent; /* allow page gradient to show through */
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  overflow: visible;
-  box-shadow: none;
-  border: 1px solid rgba(255,255,255,0.04);
-  backdrop-filter: blur(4px);
+  overflow: hidden;
+  backdrop-filter: blur(5px);
 }
-
-/* Cells should be transparent so the table blends with the background; subtle separators remain for readability */
 th, td {
   padding: 15px;
   text-align: left;
-  background: transparent;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-
 th {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  background: transparent;
 }
-
-/* Hover states adapt to day/night for good contrast while remaining subtle */
-tr:hover { transform: none; }
-body.day tr:hover { background: rgba(0,0,0,0.06); }
-body.night tr:hover { background: rgba(255,255,255,0.04); }
-
-/* Per-mode separators and text colors */
-body.day table { border-color: rgba(0,0,0,0.06); }
-body.day th, body.day td { border-bottom-color: rgba(0,0,0,0.06); color: #111; }
-body.night th, body.night td { border-bottom-color: rgba(255,255,255,0.06); color: #fff; }
+tr:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.01);
+}
 
 /* 🔘 Buttons */
 .btn {
