@@ -9,29 +9,11 @@ body {
   padding-top: 50px;
 }
 
-/* Custom cursor (copied from index.css) */
-.cursor, .cursor-shadow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-}
+/* Day / Night text color: JS will add `body.day` or `body.night` */
+body.day { color: #111; }
+body.night { color: #fff; }
 
-.cursor {
-  width: 12px;
-  height: 12px;
-  background: white;
-  mix-blend-mode: difference;
-}
-
-.cursor-shadow {
-  width: 35px;
-  height: 35px;
-  background: rgba(255,255,255,0.15);
-}
+/* Custom cursor removed */
 
 h2 {
   color: #00796b;

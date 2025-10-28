@@ -36,14 +36,23 @@
     <?php endif; ?>
   </div>
 
-  <!-- Custom Cursor -->
-  <div class="cursor"></div>
-  <div class="cursor-shadow"></div>
-
-  <!-- Footer -->
-  <div class="footer-name">Made with by Divy Doshi and Mishri Panchal </div>
+  <!-- Custom cursor removed site-wide -->
 
   <script src="./src/background.js"></script>
-  <!-- weather.js is only loaded on the weather page now -->
+  <script src="./src/weather.js"></script>
+  <script>
+    // Small client-side greeting based on local time
+    (function(){
+      try{
+        const hour = new Date().getHours();
+        const greetEl = document.querySelector('.welcome-user');
+        if (!greetEl) return;
+        if (hour >= 5 && hour < 12) greetEl.innerText = 'Good morning 🌤️';
+        else if (hour >= 12 && hour < 17) greetEl.innerText = 'Good afternoon ☀️';
+        else if (hour >= 17 && hour < 21) greetEl.innerText = 'Good evening 🌆';
+        else greetEl.innerText = 'Good night 🌙';
+      }catch(e){}
+    })();
+  </script>
 </body>
 </html>

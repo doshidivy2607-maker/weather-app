@@ -86,45 +86,41 @@ if (DISABLE_PAGE_EFFECTS) {
   // Auto-init background and show sun/moon only when effects enabled
   getWeatherBackground();
 
-  // Ensure cursor elements exist on the page so custom cursor works across pages
-  (function ensureCursorElements() {
+  // Custom cursor removed: no DOM nodes will be injected for the cursor
+
+  // Ensure sun/moon elements and minimal CSS exist so pages without admin CSS still show them
+  (function ensureSunMoonElements() {
     try {
-      if (!document.querySelector('.cursor')) {
-        const c = document.createElement('div');
-        c.className = 'cursor';
-        document.body.appendChild(c);
+      if (!document.getElementById('sun')) {
+        const sun = document.createElement('div');
+        sun.id = 'sun';
+        sun.className = 'sun';
+        document.body.appendChild(sun);
       }
-      if (!document.querySelector('.cursor-shadow')) {
-        const s = document.createElement('div');
-        s.className = 'cursor-shadow';
-        document.body.appendChild(s);
+      if (!document.getElementById('moon')) {
+        const moon = document.createElement('div');
+        moon.id = 'moon';
+        moon.className = 'moon';
+        document.body.appendChild(moon);
+      }
+
+      // inject minimal CSS for sun/moon if not present
+      if (!document.getElementById('sun-moon-style')) {
+        const s = document.createElement('style');
+        s.id = 'sun-moon-style';
+        s.innerHTML = `
+        .sun, .moon { position: fixed; top: 6%; right: 6%; width: 90px; height: 90px; border-radius: 50%; z-index: 0; box-shadow: 0 8px 40px rgba(0,0,0,0.15); }
+        .sun { background: radial-gradient(circle, #FFD54F 0%, #FFB300 60%); filter: drop-shadow(0 6px 18px rgba(255,180,0,0.25)); animation: sunPulse 4s ease-in-out infinite; }
+        .moon { background: radial-gradient(circle, #f8f3d4 0%, #e6dd9f 70%); box-shadow: 0 6px 28px rgba(200,200,220,0.2); animation: moonGlow 5s ease-in-out infinite alternate; }
+        @keyframes sunPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+        @keyframes moonGlow { 0% { transform: scale(1); } 100% { transform: scale(1.06); } }
+        `;
+        document.head.appendChild(s);
       }
     } catch (e) { /* ignore DOM errors */ }
   })();
 
-  // Smooth custom cursor follow
-  ;(function initCustomCursor() {
-    const cursor = document.querySelector('.cursor');
-    const shadow = document.querySelector('.cursor-shadow');
-    if (!cursor || !shadow) return;
-
-    let mouseX = 0, mouseY = 0;
-    let posX = 0, posY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    function animate() {
-      posX += (mouseX - posX) * 0.15;
-      posY += (mouseY - posY) * 0.15;
-      cursor.style.transform = `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
-      shadow.style.transform = `translate(${posX}px, ${posY}px) translate(-50%, -50%)`;
-      requestAnimationFrame(animate);
-    }
-    requestAnimationFrame(animate);
-  })();
+  // Custom cursor removed: no animation will run
 
 }
 
@@ -160,18 +156,23 @@ function changeBackground(weather) {
 
   if (weather === "clear") {
     body.classList.add(isNight ? "night" : "sunny");
+    showSun(!isNight);
     if (isNight) addStars();
   } else if (weather === "clouds") {
     body.classList.add("cloudy");
+    showSun(!isNight);
     addClouds();
   } else if (["rain", "drizzle"].includes(weather)) {
     body.classList.add("rain");
+    showSun(!isNight);
     addRain();
   } else if (weather === "snow") {
     body.classList.add("snow");
+    showSun(!isNight);
     addSnow();
   } else if (["mist", "fog", "haze"].includes(weather)) {
     body.classList.add("mist");
+    showSun(!isNight);
     addClouds();
   } else {
     setDefaultBackground();
