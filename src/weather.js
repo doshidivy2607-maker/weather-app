@@ -1,5 +1,5 @@
 // ✅ Replace below API key with your valid OpenWeather API key
-const apiKey = 'e989953360101c93cd4f8279d969a659';
+const apiKey = '4a5e39fd167903ef5c435ec14fa25597';
 
 // Try to use geolocation on load to fetch realtime weather and inform background.js
 function fetchWeatherByCoords(lat, lon, isMini = false) {

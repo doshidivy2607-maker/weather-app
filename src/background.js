@@ -1,6 +1,6 @@
 // ✅ Handles dynamic weather background (shared by login, index, weather pages)
 
-const weatherBgApi = "e989953360101c93cd4f8279d969a659";
+const weatherBgApi = "4a5e39fd167903ef5c435ec14fa25597";
 
 // Cleanup any leftover page-transition artifacts from older versions
 (function cleanupOldTransitions() {
