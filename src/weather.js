@@ -1,5 +1,5 @@
 // ✅ Replace below API key with your valid OpenWeather API key
-const apiKey = '4a5e39fd167903ef5c435ec14fa25597';
+const apiKey = 'c1b76d1e7eb86aa1c1b0ce08d0627d91';
 
 // Try to use geolocation on load to fetch realtime weather and inform background.js
 function fetchWeatherByCoords(lat, lon, isMini = false) {
@@ -58,6 +58,7 @@ async function getWeather(isMini = false) {
   }
 
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+
 
   try {
     const response = await fetch(url);

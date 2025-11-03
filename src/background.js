@@ -1,6 +1,6 @@
 // ✅ Handles dynamic weather background (shared by login, index, weather pages)
 
-const weatherBgApi = "4a5e39fd167903ef5c435ec14fa25597";
+const weatherBgApi = "c1b76d1e7eb86aa1c1b0ce08d0627d91";
 
 // Cleanup any leftover page-transition artifacts from older versions
 (function cleanupOldTransitions() {
@@ -151,6 +151,8 @@ function changeBackground(weather) {
   effects.innerHTML = "";
   body.className = "";
 
+  console.log("Changing background to weather:", weather);
+
   const hour = new Date().getHours();
   const isNight = hour < 6 || hour > 18;
 
@@ -161,7 +163,6 @@ function changeBackground(weather) {
   } else if (weather === "clouds") {
     body.classList.add("cloudy");
     showSun(!isNight);
-    // addClouds();
   } else if (["rain", "drizzle"].includes(weather)) {
     body.classList.add("rain");
     showSun(!isNight);
@@ -173,7 +174,6 @@ function changeBackground(weather) {
   } else if (["mist", "fog", "haze"].includes(weather)) {
     body.classList.add("mist");
     showSun(!isNight);
-    // addClouds();
   } else {
     setDefaultBackground();
   }
