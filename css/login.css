@@ -45,7 +45,7 @@ body.night { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c536
   overflow: hidden;
 }
 
-.rain-drop, .snow-flake, .star, {
+.rain-drop, .snow-flake, .star  {
   position: absolute;
 }
 
