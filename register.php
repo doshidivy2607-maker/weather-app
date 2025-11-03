@@ -81,7 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
     body.clear { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
     body.sunny { background: linear-gradient(135deg, #FDB813 0%, #FF6B6B 100%); }
-    body.cloudy { background: linear-gradient(135deg, #B0BEC5 0%, #546E7A 100%); }
     body.rain { background: linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%); }
     body.thunderstorm { background: linear-gradient(135deg, #1A237E 0%, #4A148C 100%); }
     body.snow { background: linear-gradient(135deg, #E0EAFC 0%, #CFDEF3 100%); }
@@ -139,24 +138,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         50% { opacity: 1; }
     }
 
-    .cloud {
-        position: absolute;
-        background: rgba(255,255,255,0.7);
-        border-radius: 50%;
-        animation: moveClouds 60s linear infinite;
-    }
-
-    .cloud::before, .cloud::after {
-        content: '';
-        position: absolute;
-        background: rgba(255,255,255,0.7);
-        border-radius: 50%;
-    }
-
-    @keyframes moveClouds {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(120vw); }
-    }
 
     /* Animated Container */
     .container {
