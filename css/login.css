@@ -1,5 +1,4 @@
-/* Same modern animated glassmorphism look as register.php */
-
+/* Reset and base */
 * {
   margin: 0;
   padding: 0;
@@ -10,6 +9,7 @@
 
 /* Custom cursor removed */
 
+/* Body styles for glassmorphism and background */
 body {
   height: 100vh;
   display: flex;
@@ -19,14 +19,14 @@ body {
   overflow: hidden;
   position: relative;
   color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-/* Day / Night text color: JS will add `body.day` or `body.night` */
+/* Day / Night text colors */
 body.day { color: #111 !important; }
 body.night { color: #fff !important; }
 
-/* Background gradients */
-body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+/* Background gradients for weather */
 body.clear { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
 body.sunny { background: linear-gradient(135deg, #FDB813 0%, #FF6B6B 100%); }
 body.rain { background: linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%); }
@@ -35,49 +35,7 @@ body.snow { background: linear-gradient(135deg, #E0EAFC 0%, #CFDEF3 100%); }
 body.mist, body.fog, body.haze { background: linear-gradient(135deg, #757F9A 0%, #D7DDE8 100%); }
 body.night { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
 
-/* Weather effects */
-.weather-effects {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.rain-drop, .snow-flake, .star  {
-  position: absolute;
-}
-
-.rain-drop {
-  width: 2px;
-  height: 50px;
-  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.6));
-  animation: fall linear infinite;
-}
-@keyframes fall { to { transform: translateY(100vh); } }
-
-.snow-flake {
-  color: white;
-  font-size: 1rem;
-  animation: snowfall linear infinite;
-}
-@keyframes snowfall { to { transform: translateY(100vh) rotate(360deg); } }
-
-.star {
-  width: 2px; height: 2px;
-  background: #fff;
-  border-radius: 50%;
-  animation: twinkle linear infinite;
-}
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 1; }
-}
-
-
-
-/* Container */
+/* Glassmorphic container */
 .container {
   background: rgba(255, 255, 255, 0.1);
   padding: 40px;
@@ -92,10 +50,17 @@ body.night { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c536
   max-width: 450px;
   animation: slideUp 0.8s ease-out, float 3s ease-in-out infinite;
 }
-@keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-/* Header */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Heading style */
 .header-table td {
   font-size: 2.5rem;
   font-weight: bold;
@@ -104,21 +69,24 @@ body.night { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c536
   text-shadow: 3px 3px 15px rgba(0,0,0,0.5);
   animation: glow 2s ease-in-out infinite alternate;
 }
+
 @keyframes glow {
   from { text-shadow: 0 0 10px #fff, 0 0 20px #667eea; }
   to { text-shadow: 0 0 20px #ff4081, 0 0 40px #ff4081; }
 }
 
-/* Inputs */
+/* Input groups */
 .input-group {
   margin: 18px 0;
   animation: fadeInUp 0.6s ease-out backwards;
 }
+
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Form inputs */
 input[type="email"],
 input[type="password"] {
   width: 100%;
@@ -139,7 +107,7 @@ input:focus {
   transform: scale(1.02);
 }
 
-/* Button */
+/* Submit button */
 input[type="submit"] {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -154,16 +122,18 @@ input[type="submit"] {
   transition: 0.4s;
   animation: pulse 2s ease-in-out infinite;
 }
+
 input[type="submit"]:hover {
   transform: scale(1.08);
   box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
 }
+
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 10px rgba(102,126,234,0.5); }
   50% { box-shadow: 0 0 25px rgba(118,75,162,0.8); }
 }
 
-/* Message box */
+/* Success and Error messages */
 .message {
   margin: 15px 0;
   padding: 12px;
@@ -171,16 +141,28 @@ input[type="submit"]:hover {
   font-weight: bold;
   animation: bounceIn 0.5s ease-out;
 }
+
 @keyframes bounceIn {
   0% { opacity: 0; transform: scale(0.3); }
   50% { transform: scale(1.05); }
   100% { opacity: 1; transform: scale(1); }
 }
-.success { background: rgba(212, 237, 218, 0.9); color: #155724; }
-.error { background: rgba(248, 215, 218, 0.9); color: #721c24; }
 
-/* Link */
-p { margin-top: 25px; }
+.success {
+  background: rgba(212, 237, 218, 0.9);
+  color: #155724;
+}
+
+.error {
+  background: rgba(248, 215, 218, 0.9);
+  color: #721c24;
+}
+
+/* Links */
+p {
+  margin-top: 25px;
+}
+
 a {
   color: #fff;
   background: rgba(255,255,255,0.2);
@@ -189,14 +171,23 @@ a {
   text-decoration: none;
   font-weight: bold;
   transition: 0.3s;
+  display: inline-block;
 }
+
 a:hover {
   background: rgba(255,255,255,0.4);
   transform: scale(1.1) rotate(-2deg);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .container { width: 95%; padding: 30px 20px; }
-  .header-table td { font-size: 2rem; }
+  .container {
+    width: 95%;
+    padding: 30px 20px;
+  }
+
+  .header-table td {
+    font-size: 2rem;
+  }
 }
