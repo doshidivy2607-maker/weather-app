@@ -1,48 +1,194 @@
-/* CSS for register.php */
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 @import url('./shared-ui.css');
 
-body {
-  font-family: Arial, sans-serif;
-  background: #e0f7fa;
-  text-align: center;
-  padding-top: 50px;
-}
-
-/* Day / Night text color: JS will add `body.day` or `body.night` */
-body.day { color: #111; }
-body.night { color: #fff; }
-
 /* Custom cursor removed */
 
-h2 {
-  color: #00796b;
+/* Body styles */
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  position: relative;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-form {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+/* Day / Night text colors */
+body.day { color: #111 !important; }
+body.night { color: #fff !important; }
+
+/* Background gradients for weather */
+body.clear { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
+body.sunny { background: linear-gradient(135deg, #FDB813 0%, #FF6B6B 100%); }
+body.rain { background: linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%); }
+body.thunderstorm { background: linear-gradient(135deg, #1A237E 0%, #4A148C 100%); }
+body.snow { background: linear-gradient(135deg, #E0EAFC 0%, #CFDEF3 100%); }
+body.mist, body.fog, body.haze { background: linear-gradient(135deg, #757F9A 0%, #D7DDE8 100%); }
+body.night { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
+
+/* Glassmorphic container */
+.container {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  width: 90%;
+  max-width: 450px;
+  animation: slideUp 0.8s ease-out, float 3s ease-in-out infinite;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Header style */
+.header-table td {
+  font-size: 2.5rem;
+  font-weight: bold;
+  letter-spacing: 3px;
+  color: #fff;
+  text-shadow: 3px 3px 15px rgba(0,0,0,0.5);
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #fff, 0 0 20px #667eea; }
+  to { text-shadow: 0 0 20px #ff4081, 0 0 40px #ff4081; }
+}
+
+/* Input groups */
+.input-group {
+  margin: 18px 0;
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+/* Form inputs */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 50px;
+  border: 2px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.15);
+  color: white;
+  outline: none;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #fff;
+  background: rgba(255,255,255,0.25);
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+  transform: scale(1.02);
+}
+
+/* Submit button */
+button, input[type="submit"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50px;
+  width: 100%;
+  padding: 15px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 17px;
+  margin-top: 20px;
+  transition: 0.4s;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+button:hover, input[type="submit"]:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(102,126,234,0.5); }
+  50% { box-shadow: 0 0 25px rgba(118,75,162,0.8); }
+}
+
+/* Success and Error messages */
+.message {
+  margin: 15px 0;
+  padding: 12px;
+  border-radius: 15px;
+  font-weight: bold;
+  animation: bounceIn 0.5s ease-out;
+}
+
+@keyframes bounceIn {
+  0% { opacity: 0; transform: scale(0.3); }
+  50% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.success {
+  background: rgba(212, 237, 218, 0.9);
+  color: #155724;
+}
+
+.error {
+  background: rgba(248, 215, 218, 0.9);
+  color: #721c24;
+}
+
+/* Links */
+p {
+  margin-top: 25px;
+}
+
+a {
+  color: #fff;
+  background: rgba(255,255,255,0.2);
+  padding: 8px 18px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
   display: inline-block;
 }
 
-input[type="email"], input[type="password"], input[type="text"] {
-  padding: 8px;
-  margin: 8px 0;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+a:hover {
+  background: rgba(255,255,255,0.4);
+  transform: scale(1.1) rotate(-2deg);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  background: #00796b;
-  color: #fff;
-  cursor: pointer;
-}
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 30px 20px;
+  }
 
-button:hover {
-  background: #004d40;
+  .header-table td {
+    font-size: 2rem;
+  }
 }
