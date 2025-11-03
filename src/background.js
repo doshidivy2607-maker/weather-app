@@ -161,7 +161,7 @@ function changeBackground(weather) {
   } else if (weather === "clouds") {
     body.classList.add("cloudy");
     showSun(!isNight);
-    addClouds();
+    // addClouds();
   } else if (["rain", "drizzle"].includes(weather)) {
     body.classList.add("rain");
     showSun(!isNight);
@@ -173,7 +173,7 @@ function changeBackground(weather) {
   } else if (["mist", "fog", "haze"].includes(weather)) {
     body.classList.add("mist");
     showSun(!isNight);
-    addClouds();
+    // addClouds();
   } else {
     setDefaultBackground();
   }
@@ -240,17 +240,8 @@ function addSnow() {
 }
 
 function addClouds() {
-  for (let i = 0; i < 3; i++) {
-    const c = document.createElement("div");
-    c.className = "cloud";
-    c.style.width = 100 + Math.random() * 100 + "px";
-    c.style.height = 50 + Math.random() * 30 + "px";
-    c.style.top = Math.random() * 30 + "%";
-    c.style.left = "-200px";
-    c.style.animationDuration = 40 + Math.random() * 40 + "s";
-    document.getElementById("weatherEffects").appendChild(c);
-  }
 }
+
 
 // Show or hide sun/moon based on boolean (true => day/sun, false => night/moon)
 function showSun(isDay) {
