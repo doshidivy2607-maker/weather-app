@@ -228,18 +228,11 @@ tr:hover {
 
 @keyframes sunPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
 
-/* clouds */
-.cloud {
-  position: absolute;
-  background: rgba(255,255,255,0.85);
-  border-radius: 50px;
-  opacity: 0.9;
-  z-index: 0;
-  filter: blur(6px);
+@keyframes moonGlow {
+  0% { transform: scale(1); box-shadow: 0 0 40px rgba(255,255,224,0.5); }
+  100% { transform: scale(1.1); box-shadow: 0 0 60px rgba(255,255,224,0.7); }
 }
-.cloud.small { width: 120px; height: 40px; }
-.cloud.med { width: 220px; height: 70px; }
-.cloud.large { width: 360px; height: 110px; }
+
 
 /* Day / Night text color: JS will add `body.day` or `body.night` */
 body.day { color: #111; }
@@ -287,11 +280,11 @@ body.night { color: #fff; }
 
 /* Accessibility: respect prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-  .sun, .moon, .cloud, .rain-drop, .snow-flake, .star { animation: none !important; transition: none !important; }
+  .sun, .moon, .rain-drop, .snow-flake, .star { animation: none !important; transition: none !important; }
 }
 
 /* Mobile fallback: reduce particles */
 @media (max-width: 600px) {
   .sun, .moon { display: none; }
-  .cloud { display: none; }
+  .rain-drop, .snow-flake, .star { display: none; }
 }

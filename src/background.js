@@ -71,7 +71,7 @@ if (DISABLE_PAGE_EFFECTS) {
       s.id = 'disable-effects-style';
       s.innerHTML = `
         * { animation: none !important; transition: none !important; }
-        .weather-effects, .star, .rain-drop, .snow-flake, .cloud, .sun, .moon, .cursor, .cursor-shadow { display: none !important; }
+        .weather-effects, .star, .rain-drop, .snow-flake, .sun, .moon, .cursor, .cursor-shadow { display: none !important; }
       `;
       document.head.appendChild(s);
     }
@@ -239,8 +239,6 @@ function addSnow() {
   }
 }
 
-function addClouds() {
-}
 
 
 // Show or hide sun/moon based on boolean (true => day/sun, false => night/moon)

@@ -29,7 +29,6 @@ body.night { color: #fff !important; }
 body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
 body.clear { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
 body.sunny { background: linear-gradient(135deg, #FDB813 0%, #FF6B6B 100%); }
-body.cloudy { background: linear-gradient(135deg, #B0BEC5 0%, #546E7A 100%); }
 body.rain { background: linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%); }
 body.thunderstorm { background: linear-gradient(135deg, #1A237E 0%, #4A148C 100%); }
 body.snow { background: linear-gradient(135deg, #E0EAFC 0%, #CFDEF3 100%); }
@@ -46,7 +45,7 @@ body.night { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c536
   overflow: hidden;
 }
 
-.rain-drop, .snow-flake, .star, .cloud {
+.rain-drop, .snow-flake, .star, {
   position: absolute;
 }
 
@@ -76,15 +75,7 @@ body.night { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c536
   50% { opacity: 1; }
 }
 
-.cloud {
-  background: rgba(255,255,255,0.7);
-  border-radius: 50%;
-  animation: moveClouds 60s linear infinite;
-}
-@keyframes moveClouds {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(120vw); }
-}
+
 
 /* Container */
 .container {
